@@ -1,0 +1,926 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<includes>
+
+    <variable name="SCVideoRatingTopBarLabel">
+        <value condition="String.Contains(VideoPlayer.MPAA,rated)">$INFO[VideoPlayer.MPAA]</value>
+        <value>$INFO[VideoPlayer.MPAA,$LOCALIZE[23902] [B],+[/B]]</value>
+    </variable>
+
+    <variable name="SCVideoRatingTopBarLogo">
+        <value condition="String.IsEqual(VideoPlayer.MPAA,0)String.IsEqual(VideoPlayer.MPAA,6)|String.IsEqual(VideoPlayer.MPAA,12)|String.IsEqual(VideoPlayer.MPAA,15)|String.IsEqual(VideoPlayer.MPAA,18)">
+            $INFO[VideoPlayer.MPAA,certify/p-,.png]
+        </value>
+    </variable>
+
+    <include name="SCWidgetListPoster">
+        <definition>
+            <include content="CategoryLabel">
+                <param name="label">$PARAM[widget_header]</param>
+                <param name="list_id" value="$PARAM[list_id]"/>
+            </include>
+            <include content="BusyListSpinner">
+                <param name="list_id" value="$PARAM[list_id]"/>
+                <param name="posy" value="250"/>
+            </include>
+            <control type="panel" id="$PARAM[list_id]">
+                <left>0</left>
+                <top>115</top>
+                <visible>Integer.IsGreater(Container($PARAM[list_id]).NumItems,0) |
+                    Container($PARAM[list_id]).IsUpdating
+                </visible>
+                <right>0</right>
+                <height>503</height>
+                <include content="WidgetListCommon">
+                    <param name="list_id" value="$PARAM[list_id]"/>
+                </include>
+                <itemlayout width="310" height="486">
+                    <control type="group">
+                        <left>68</left>
+                        <top>10</top>
+                        <include content="SCInfoWallMovieLayout">
+                            <param name="focused" value="false"/>
+                        </include>
+                    </control>
+                </itemlayout>
+                <focusedlayout width="310" height="486">
+                    <control type="group">
+                        <depth>DepthContentPopout</depth>
+                        <left>68</left>
+                        <top>10</top>
+                        <animation type="Focus">
+                            <effect type="zoom" start="100" end="110" time="200" tween="sine" easing="inout"
+                                    center="230,130"/>
+                        </animation>
+                        <animation type="Unfocus">
+                            <effect type="zoom" start="110" end="100" time="200" tween="sine" easing="inout"
+                                    center="230,130"/>
+                        </animation>
+                        <include content="SCInfoWallMovieLayout">
+                            <param name="focused" value="true"/>
+                        </include>
+                    </control>
+                </focusedlayout>
+                <content sortby="$PARAM[sortby]" sortorder="$PARAM[sortorder]" target="$PARAM[widget_target]"
+                         limit="100">$PARAM[content_path]
+                </content>
+            </control>
+        </definition>
+    </include>
+
+    <include name="SCInfoWallMovieLayout">
+        <param name="focused">false</param>
+        <definition>
+            <!-- nema poster vratane poster_default -->
+            <control type="group">
+                <visible>String.IsEmpty(ListItem.Art(poster)) | String.Contains(ListItem.Art(poster),poster_default)</visible>
+                <control type="image">
+                    <left>15</left>
+                    <top>-10</top>
+                    <width>290</width>
+                    <height>400</height>
+                    <texture>dialogs/dialog-bg-nobo.png</texture>
+                    <bordertexture border="21">overlays/shadow.png</bordertexture>
+                    <bordersize>20</bordersize>
+                </control>
+                <control type="image">
+                    <left>15</left>
+                    <top>-10</top>
+                    <width>290</width>
+                    <height>400</height>
+                    <texture colordiffuse="button_focus">colors/grey.png</texture>
+                    <bordersize>20</bordersize>
+                    <visible>$PARAM[focused]</visible>
+                    <include condition="$PARAM[focused]">Animation_FocusTextureFade</include>
+                </control>
+                <control type="textbox">
+                    <left>40</left>
+                    <top>244</top>
+                    <width>242</width>
+                    <height>120</height>
+                    <font>font27</font>
+                    <align>center</align>
+                    <aligny>center</aligny>
+                    <label>$INFO[ListItem.Label]</label>
+                    <autoscroll time="2000" delay="3000" repeat="5000">$PARAM[focused]</autoscroll>
+                    <visible>!ListItem.IsParentFolder</visible>
+                </control>
+                <control type="image">
+                    <left>24</left>
+                    <top>-1</top>
+                    <width>272</width>
+                    <height>270</height>
+                    <texture fallback="DefaultMovies.png" background="true">$INFO[ListItem.Icon]</texture>
+                    <aspectratio>scale</aspectratio>
+                    <bordersize>20</bordersize>
+                </control>
+            </control>
+            <!-- ma poster -->
+            <control type="group">
+                <visible>!String.IsEmpty(ListItem.Art(poster)) + !String.Contains(ListItem.Art(poster),poster_default)</visible>
+                <control type="image">
+                    <left>11</left>
+                    <top>-14</top>
+                    <width>298</width>
+                    <height>408</height>
+                    <texture colordiffuse="button_focus">colors/grey.png</texture>
+                    <bordertexture border="21">overlays/shadow.png</bordertexture>
+                    <bordersize>20</bordersize>
+                    <visible>$PARAM[focused]</visible>
+                    <include condition="$PARAM[focused]">Animation_FocusTextureFade</include>
+                </control>
+                <control type="image">
+                    <left>15</left>
+                    <top>-10</top>
+                    <width>290</width>
+                    <height>400</height>
+                    <texture background="true">$INFO[ListItem.Art(poster)]</texture>
+                    <aspectratio>scale</aspectratio>
+                    <bordertexture border="21">overlays/shadow.png</bordertexture>
+                    <bordersize>20</bordersize>
+                </control>
+                <control type="image">
+                    <left>35</left>
+                    <top>290</top>
+                    <width>80</width>
+                    <height>80</height>
+                    <texture>overlays/overlay-bg.png</texture>
+                    <visible>Listitem.IsCollection | ListItem.IsPlaying | Integer.IsGreater(ListItem.Playcount,0)
+                    </visible>
+                </control>
+            </control>
+            <!-- tvshow -->
+            <control type="group">
+                <visible>String.IsEqual(ListItem.DBtype,tvshow)</visible>
+                <top>320</top>
+                <control type="image">
+                    <left>35</left>
+                    <top>0</top>
+                    <width>250</width>
+                    <height>50</height>
+                    <texture colordiffuse="CCFFFFFF">overlays/overlayfade.png</texture>
+                    <visible>!String.IsEmpty(ListItem.Art(poster))</visible>
+                </control>
+                <control type="label">
+                    <left>0</left>
+                    <top>20</top>
+                    <width>244</width>
+                    <label>$INFO[ListItem.Property(WatchedEpisodes)]$INFO[ListItem.Property(TotalEpisodes), / ,]</label>
+                    <font>font20_title</font>
+                    <shadowcolor>text_shadow</shadowcolor>
+                    <align>right</align>
+                </control>
+                <control type="image">
+                    <left>254</left>
+                    <top>23</top>
+                    <width>24</width>
+                    <height>24</height>
+                    <texture>lists/played-total.png</texture>
+                </control>
+            </control>
+            <!-- uz videne -->
+            <control type="image">
+                <left>35</left>
+                <top>338</top>
+                <width>32</width>
+                <height>32</height>
+                <texture>$VAR[WallWatchedIconVar]</texture>
+            </control>
+            <!-- hodnotenie -->
+            <control type="group">
+                <left>135</left>
+                <top>-8</top>
+                <include>SCRatingCircle</include>
+            </control>
+            <!-- kolko % uz bolo prehraneho z DB -->
+            <control type="progress">
+                <left>35</left>
+                <top>350</top>
+                <width>250</width>
+                <height>1</height>
+                <texturebg></texturebg>
+                <midtexture colordiffuse="button_focus" border="3">progress/texturebg_alt_white.png</midtexture>
+                <info>ListItem.PercentPlayed</info>
+                <visible>!Integer.IsEqual(ListItem.PercentPlayed,0)</visible>
+            </control>
+            <!-- kolko % uz bolo prehraneho z Prop -->
+            <control type="progress">
+                <left>35</left>
+                <top>350</top>
+                <width>250</width>
+                <height>1</height>
+                <texturebg></texturebg>
+                <midtexture colordiffuse="button_focus" border="3">progress/texturebg_alt_white.png</midtexture>
+                <info>$NUMBER[$INFO[ListItem.Property(PercentPlayed)]]</info>
+                <visible>!Integer.IsEqual($NUMBER[$INFO[ListItem.Property(PercentPlayed)]],0)</visible>
+            </control>
+        </definition>
+    </include>
+
+    <include name="SCRatingCircle">
+        <param name="animation">False</param>
+        <definition>
+            <control type="group">
+                <include content="SCUserRatingContent">
+                    <param name="infolabel" value="ListItem.Rating"/>
+                </include>
+            </control>
+        </definition>
+    </include>
+
+    <include name="SCUserRatingContent">
+        <visible>!String.IsEmpty($PARAM[infolabel])</visible>
+        <control type="image">
+            <left>3</left>
+            <top>-3</top>
+            <width>44</width>
+            <height>44</height>
+            <aspectratio>keep</aspectratio>
+            <texture colordiffuse="button_focus">overlays/badge.png</texture>
+        </control>
+        <control type="label">
+            <left>3</left>
+            <top>-3</top>
+            <align>center</align>
+            <aligny>center</aligny>
+            <width>44</width>
+            <height>44</height>
+            <font>font20_title</font>
+            <label>$INFO[$PARAM[infolabel]]</label>
+        </control>
+    </include>
+
+    <include name="SCMovieList">
+        <include content="WidgetListCategories" condition="Skin.HasSetting(sc_home_movies_categories)">
+            <param name="content_path"
+                   value="plugin://plugin.video.stream-cinema/?url=2f464d6f76696573"/>
+            <param name="additional_movie_items" value="true"/>
+            <param name="widget_header" value="$LOCALIZE[23900]"/>
+            <param name="widget_target" value="videos"/>
+            <param name="list_id" value="5901"/>
+        </include>
+        <include content="SCWidgetListPoster" condition="Skin.HasSetting(sc_home_movies_history)">
+            <param name="content_path"
+                   value="plugin://plugin.video.stream-cinema/?action=6c617374&amp;id=6c61737466&amp;title=646972"/>
+            <param name="widget_header" value="Posledne sledovane"/>
+            <param name="widget_target" value="videos"/>
+            <param name="list_id" value="5902"/>
+        </include>
+        <include content="SCWidgetListPoster" condition="Skin.HasSetting(sc_home_movies_new)">
+            <param name="content_path"
+                   value="plugin://plugin.video.stream-cinema/?url=2f464d6f766965732f6c6174657374643f6c696d69743d3135"/>
+            <param name="widget_header" value="Novinky"/>
+            <param name="widget_target" value="videos"/>
+            <param name="list_id" value="5903"/>
+        </include>
+        <include content="SCWidgetListPoster" condition="Skin.HasSetting(sc_home_movies_kids)">
+            <param name="content_path"
+                   value="plugin://plugin.video.stream-cinema/?url=2f46696c7465722f3f7479703d312670673d30266475623d3126723d3e363026793d3e32303130266f663d72616e646f6d266f643d64657363266c696d69743d323026706167653d31266d3d36"/>
+            <param name="widget_header" value="Kids"/>
+            <param name="widget_target" value="videos"/>
+            <param name="list_id" value="5904"/>
+        </include>
+        <include content="SCWidgetListPoster" condition="Skin.HasSetting(sc_home_movies_disney)">
+            <param name="content_path"
+                   value="plugin://plugin.video.stream-cinema/?url=2f5365617263682f6765744c6973742f3836"/>
+            <param name="widget_header" value="Disney"/>
+            <param name="widget_target" value="videos"/>
+            <param name="list_id" value="5905"/>
+        </include>
+        <include content="SCWidgetListPoster" condition="Skin.HasSetting(sc_home_movies_hdr)">
+            <param name="content_path"
+                   value="plugin://plugin.video.stream-cinema/?url=2f464844522f6c61746573743f6c696d69743d32302670673d30"/>
+            <param name="widget_header" value="HDR"/>
+            <param name="widget_target" value="videos"/>
+            <param name="list_id" value="5906"/>
+        </include>
+        <include content="SCWidgetListPoster" condition="Skin.HasSetting(sc_home_movies_netflix)">
+            <param name="content_path"
+                   value="plugin://plugin.video.stream-cinema/?url=2f5365617263682f6765744c6973742f39393f6c696d69743d3330266f663d6d696e64617465266f643d64657363"/>
+            <param name="widget_header" value="Netflix"/>
+            <param name="widget_target" value="videos"/>
+            <param name="list_id" value="5907"/>
+        </include>
+        <include content="SCWidgetListPoster" condition="Skin.HasSetting(sc_home_movies_random)">
+            <param name="content_path"
+                   value="plugin://plugin.video.stream-cinema/?url=2f46696c7465722f3f7479703d312670673d3026723d3e363026793d3e32303130266f663d72616e646f6d266f643d64657363266c696d69743d323026706167653d31"/>
+            <param name="widget_header" value="Nahodne"/>
+            <param name="widget_target" value="videos"/>
+            <param name="list_id" value="5908"/>
+        </include>
+    </include>
+
+    <include name="SCSeriesList">
+        <include content="SCWidgetListPoster" condition="Skin.HasSetting(sc_home_series_categories)">
+            <param name="content_path"
+                   value="plugin://plugin.video.stream-cinema/?url=2f46536572696573"/>
+            <param name="additional_movie_items" value="true"/>
+            <param name="widget_header" value="$LOCALIZE[23900]"/>
+            <param name="widget_target" value="videos"/>
+            <param name="list_id" value="6001"/>
+        </include>
+        <include content="SCWidgetListPoster" condition="Skin.HasSetting(sc_home_series_new)">
+            <param name="content_path"
+                   value="plugin://plugin.video.stream-cinema/?url=2f465365726965732f6c617465737474"/>
+            <param name="widget_header" value="Novinky"/>
+            <param name="widget_target" value="videos"/>
+            <param name="list_id" value="6002"/>
+        </include>
+        <include content="SCWidgetListPoster" condition="Skin.HasSetting(sc_home_series_history)">
+            <param name="content_path"
+                   value="plugin://plugin.video.stream-cinema/?action=6c617374&amp;id=6c61737473&amp;title=646972"/>
+            <param name="widget_header" value="Posledne sledovane"/>
+            <param name="widget_target" value="videos"/>
+            <param name="list_id" value="6003"/>
+        </include>
+        <include content="SCWidgetListPoster" condition="Skin.HasSetting(sc_home_series_kids)">
+            <param name="content_path"
+                   value="plugin://plugin.video.stream-cinema/?url=2f465365726965732f6b696473"/>
+            <param name="widget_header" value="Kids"/>
+            <param name="widget_target" value="videos"/>
+            <param name="list_id" value="6004"/>
+        </include>
+        <include content="SCWidgetListPoster" condition="Skin.HasSetting(sc_home_series_random)">
+            <param name="content_path"
+                   value="plugin://plugin.video.stream-cinema/?url=2f46696c7465722f3f7479703d322670673d30266475623d3126723d3e363026793d3e32303130266f663d72616e646f6d266f643d64657363266c696d69743d323026706167653d31"/>
+            <param name="widget_header" value="Nahodne"/>
+            <param name="widget_target" value="videos"/>
+            <param name="list_id" value="6005"/>
+        </include>
+    </include>
+
+    <include name="SCConcertsList">
+        <include content="SCWidgetListPoster">
+            <param name="content_path"
+                   value="plugin://plugin.video.stream-cinema/?url=2f464b6f6e636572742f6c6174657374"/>
+            <param name="additional_movie_items" value="true"/>
+            <param name="widget_header" value="Nove"/>
+            <param name="widget_target" value="videos"/>
+            <param name="list_id" value="6101"/>
+        </include>
+        <include content="SCWidgetListPoster">
+            <param name="content_path"
+                   value="plugin://plugin.video.stream-cinema/?action=6c617374&amp;id=6c6173746b&amp;title=646972"/>
+            <param name="additional_movie_items" value="true"/>
+            <param name="widget_header" value="Posledne sledovane"/>
+            <param name="widget_target" value="videos"/>
+            <param name="list_id" value="6102"/>
+        </include>
+    </include>
+
+    <include name="SCDocumentsList">
+        <include content="SCWidgetListPoster">
+            <param name="content_path"
+                   value="plugin://plugin.video.stream-cinema/?url=2f46446f63752f6c6174657374"/>
+            <param name="additional_movie_items" value="true"/>
+            <param name="widget_header" value="Nove"/>
+            <param name="widget_target" value="videos"/>
+            <param name="list_id" value="6201"/>
+        </include>
+        <include content="SCWidgetListPoster">
+            <param name="content_path"
+                   value="plugin://plugin.video.stream-cinema/?action=6c617374&amp;id=6c61737464&amp;title=646972"/>
+            <param name="additional_movie_items" value="true"/>
+            <param name="widget_header" value="Posledne sledovane"/>
+            <param name="widget_target" value="videos"/>
+            <param name="list_id" value="6202"/>
+        </include>
+    </include>
+
+    <include name="SCAnimeList">
+        <include content="SCWidgetListPoster">
+            <param name="content_path"
+                   value="plugin://plugin.video.stream-cinema/?url=2f46416e696d652f4d6f76696573"/>
+            <param name="additional_movie_items" value="true"/>
+            <param name="widget_header" value="Filmy"/>
+            <param name="widget_target" value="videos"/>
+            <param name="list_id" value="6301"/>
+        </include>
+        <include content="SCWidgetListPoster">
+            <param name="content_path"
+                   value="plugin://plugin.video.stream-cinema/?url=2f46416e696d652f536572696573"/>
+            <param name="additional_movie_items" value="true"/>
+            <param name="widget_header" value="Serialy"/>
+            <param name="widget_target" value="videos"/>
+            <param name="list_id" value="6302"/>
+        </include>
+        <include content="SCWidgetListPoster">
+            <param name="content_path"
+                   value="plugin://plugin.video.stream-cinema/?action=6c617374&amp;id=6c61737464&amp;title=646972"/>
+            <param name="additional_movie_items" value="true"/>
+            <param name="widget_header" value="Posledne sledovane"/>
+            <param name="widget_target" value="videos"/>
+            <param name="list_id" value="6303"/>
+        </include>
+    </include>
+
+    <include name="SCSportList">
+        <include content="SCWidgetListPoster">
+            <param name="content_path"
+                   value="plugin://plugin.video.stream-cinema/?url=2f4653706f7274"/>
+            <param name="additional_movie_items" value="true"/>
+            <param name="widget_header" value="Nove"/>
+            <param name="widget_target" value="videos"/>
+            <param name="list_id" value="6401"/>
+        </include>
+    </include>
+
+    <include name="SCHomeMenu">
+        <item>
+            <label>SC Filmy</label>
+            <onclick>
+                ActivateWindow(Videos,plugin://plugin.video.stream-cinema/?url=2f464d6f76696573,return)
+            </onclick>
+            <property name="menu_id">$NUMBER[23900]</property>
+            <thumb>icons/sidemenu/movies.png</thumb>
+            <property name="id">sc-movies</property>
+            <visible>Skin.HasSetting(sc_home_movies)</visible>
+        </item>
+        <item>
+            <label>SC Serialy</label>
+            <onclick>
+                ActivateWindow(Videos,plugin://plugin.video.stream-cinema/?url=2f46536572696573,return)
+            </onclick>
+            <property name="menu_id">$NUMBER[23901]</property>
+            <thumb>icons/sidemenu/movies.png</thumb>
+            <property name="id">sc-series</property>
+            <visible>Skin.HasSetting(sc_home_series)</visible>
+        </item>
+        <item>
+            <label>SC Koncerty</label>
+            <onclick>
+                ActivateWindow(Videos,plugin://plugin.video.stream-cinema/?url=2f464b6f6e63657274,return)
+            </onclick>
+            <property name="menu_id">$NUMBER[23902]</property>
+            <thumb>icons/sidemenu/movies.png</thumb>
+            <property name="id">sc-concerts</property>
+            <visible>Skin.HasSetting(sc_home_concerts)</visible>
+        </item>
+        <item>
+            <label>SC Dokumentarne</label>
+            <onclick>
+                ActivateWindow(Videos,plugin://plugin.video.stream-cinema/?url=2f46446f6375,return)
+            </onclick>
+            <property name="menu_id">$NUMBER[23903]</property>
+            <thumb>icons/sidemenu/movies.png</thumb>
+            <property name="id">sc-documents</property>
+            <visible>Skin.HasSetting(sc_home_documentary)</visible>
+        </item>
+        <item>
+            <label>SC Anime</label>
+            <onclick>
+                ActivateWindow(Videos,plugin://plugin.video.stream-cinema/?url=2f46416e696d65,return)
+            </onclick>
+            <property name="menu_id">$NUMBER[23904]</property>
+            <thumb>icons/sidemenu/movies.png</thumb>
+            <property name="id">sc-anime</property>
+            <visible>Skin.HasSetting(sc_home_anime)</visible>
+        </item>
+        <item>
+            <label>SC Sport</label>
+            <onclick>
+                ActivateWindow(Videos,plugin://plugin.video.stream-cinema/?url=2f4653706f7274,return)
+            </onclick>
+            <property name="menu_id">$NUMBER[23905]</property>
+            <thumb>icons/sidemenu/movies.png</thumb>
+            <property name="id">sc-sport</property>
+            <visible>Skin.HasSetting(sc_home_sport)</visible>
+        </item>
+    </include>
+
+    <include name="SCHomeRightMenuMovies">
+        <!-- filmy -->
+        <control type="group" id="23900">
+            <visible>String.IsEqual(Container(9000).ListItem.Property(id),sc-movies)</visible>
+            <include content="Visible_Right_Delayed">
+                <param name="id" value="sc-movies"/>
+            </include>
+            <control type="grouplist" id="23901">
+                <include>WidgetGroupListCommon</include>
+                <pagecontrol>5010</pagecontrol>
+                <include>SCMovieList</include>
+            </control>
+            <include content="WidgetScrollbar" condition="Skin.HasSetting(touchmode)">
+                <param name="scrollbar_id" value="5010"/>
+            </include>
+        </control>
+        <!-- serialy -->
+        <control type="group" id="23902">
+            <visible>String.IsEqual(Container(9000).ListItem.Property(id),sc-series)</visible>
+            <include content="Visible_Right_Delayed">
+                <param name="id" value="sc-series"/>
+            </include>
+            <control type="grouplist" id="23903">
+                <include>WidgetGroupListCommon</include>
+                <pagecontrol>5010</pagecontrol>
+                <include>SCSeriesList</include>
+            </control>
+            <include content="WidgetScrollbar" condition="Skin.HasSetting(touchmode)">
+                <param name="scrollbar_id" value="5010"/>
+            </include>
+        </control>
+        <!-- koncerty -->
+        <control type="group" id="23904">
+            <visible>String.IsEqual(Container(9000).ListItem.Property(id),sc-concerts)</visible>
+            <include content="Visible_Right_Delayed">
+                <param name="id" value="sc-concerts"/>
+            </include>
+            <control type="grouplist" id="23905">
+                <include>WidgetGroupListCommon</include>
+                <pagecontrol>5010</pagecontrol>
+                <include>SCConcertsList</include>
+            </control>
+            <include content="WidgetScrollbar" condition="Skin.HasSetting(touchmode)">
+                <param name="scrollbar_id" value="5010"/>
+            </include>
+        </control>
+        <!-- dokumentarne -->
+        <control type="group" id="23906">
+            <visible>String.IsEqual(Container(9000).ListItem.Property(id),sc-documents)</visible>
+            <include content="Visible_Right_Delayed">
+                <param name="id" value="sc-documents"/>
+            </include>
+            <control type="grouplist" id="23907">
+                <include>WidgetGroupListCommon</include>
+                <pagecontrol>5010</pagecontrol>
+                <include>SCDocumentsList</include>
+            </control>
+            <include content="WidgetScrollbar" condition="Skin.HasSetting(touchmode)">
+                <param name="scrollbar_id" value="5010"/>
+            </include>
+        </control>
+        <!-- anime -->
+        <control type="group" id="23908">
+            <visible>String.IsEqual(Container(9000).ListItem.Property(id),sc-anime)</visible>
+            <include content="Visible_Right_Delayed">
+                <param name="id" value="sc-anime"/>
+            </include>
+            <control type="grouplist" id="23909">
+                <include>WidgetGroupListCommon</include>
+                <pagecontrol>5010</pagecontrol>
+                <include>SCAnimeList</include>
+            </control>
+            <include content="WidgetScrollbar" condition="Skin.HasSetting(touchmode)">
+                <param name="scrollbar_id" value="5010"/>
+            </include>
+        </control>
+        <!-- sport -->
+        <control type="group" id="23910">
+            <visible>String.IsEqual(Container(9000).ListItem.Property(id),sc-sport)</visible>
+            <include content="Visible_Right_Delayed">
+                <param name="id" value="sc-sport"/>
+            </include>
+            <control type="grouplist" id="23911">
+                <include>WidgetGroupListCommon</include>
+                <pagecontrol>5010</pagecontrol>
+                <include>SCSportList</include>
+            </control>
+            <include content="WidgetScrollbar" condition="Skin.HasSetting(touchmode)">
+                <param name="scrollbar_id" value="5010"/>
+            </include>
+        </control>
+    </include>
+
+    <include name="SCMediaMenuListCommon">
+        <definition>
+            <left>0</left>
+            <top>100</top>
+            <width>470</width>
+            <height>100%</height>
+            <onleft>9000</onleft>
+            <onup>9000</onup>
+            <onright condition="![Window.IsVisible(musicplaylist) | Window.IsVisible(videoplaylist)]">50</onright>
+            <onright condition="Window.IsVisible(musicplaylist) | Window.IsVisible(videoplaylist)">55</onright>
+            <ondown>9000</ondown>
+            <onback>50</onback>
+            <control type="label" id="200">
+                <include>MediaMenuLabelCommon</include>
+                <label>$LOCALIZE[14018]</label>
+            </control>
+            <control type="button" id="6051">
+                <include>MediaMenuItemsCommon</include>
+                <label>$LOCALIZE[31023]</label>
+                <label2>[B]$INFO[Container.Viewmode][/B]</label2>
+                <visible>Integer.IsGreater(Container.ViewCount,1)</visible>
+                <onclick>Container.NextViewMode</onclick>
+            </control>
+            <control type="button" id="6053">
+                <include>MediaMenuItemsCommon</include>
+                <label>$LOCALIZE[31022]</label>
+                <label2>[B]$INFO[Container.SortMethod][/B]</label2>
+                <visible>Control.IsEnabled(3)</visible>
+                <onclick>SendClick(3)</onclick>
+            </control>
+            <control type="button" id="6052">
+                <include>MediaMenuItemsCommon</include>
+                <label>$LOCALIZE[31032]</label>
+                <label2>[B]$INFO[Container.SortOrder][/B]</label2>
+                <visible>Control.IsEnabled(4)</visible>
+                <onclick>SendClick(4)</onclick>
+            </control>
+            <include>MediaMenuSearchButton</include>
+            <control type="button" id="19">
+                <include>MediaMenuItemsCommon</include>
+                <onclick>right</onclick>
+                <label>$LOCALIZE[587] 1</label>
+            </control>
+            <control type="button" id="199">
+                <include>MediaMenuItemsCommon</include>
+                <label>$LOCALIZE[587] 2</label>
+                <onclick>right</onclick>
+                <onclick>Filter</onclick>
+            </control>
+        </definition>
+    </include>
+
+    <include name="SCMediaMenu">
+        <control type="grouplist" id="9001">
+            <top>50</top>
+            <include>MediaMenuListCommon</include>
+            <!--                    <visible>String.IsEqual(Container.PluginName,plugin.video.stream-cinema)</visible>-->
+            <control type="button" id="10">
+                <description>Watched Toggle</description>
+                <include>MediaMenuItemsCommon</include>
+                <label>$LOCALIZE[20367] IBA SC</label>
+                <label2>[B]$INFO[Container.NumItems][/B]</label2>
+                <visible>Container.Content(movies) | Container.Content(sets) | Container.Content(tvshows) |
+                    Container.content(seasons) | Container.Content(episodes)
+                </visible>
+            </control>
+            <control type="label" id="203">
+                <include>MediaMenuLabelCommon</include>
+                <label>$LOCALIZE[31020]</label>
+            </control>
+            <control type="radiobutton" id="16">
+                <description>PartyMode</description>
+                <label>$LOCALIZE[589]</label>
+                <include>MediaMenuItemsCommon</include>
+                <visible>Container.Content(MusicVideos)</visible>
+            </control>
+            <control type="radiobutton" id="11">
+                <description>Unlock Shares</description>
+                <include>MediaMenuItemsCommon</include>
+                <label>$LOCALIZE[20336]</label>
+                <onclick>mastermode</onclick>
+                <selected>system.ismaster</selected>
+                <visible>system.haslocks</visible>
+            </control>
+            <control type="togglebutton" id="619">
+                <description>Update library</description>
+                <include>MediaMenuItemsCommon</include>
+                <label>$LOCALIZE[653]</label>
+                <onclick>UpdateLibrary(video)</onclick>
+                <visible>!Container.Content(addons)+ String.IsEmpty(Container.PluginName)</visible>
+                <altlabel>$LOCALIZE[13353]</altlabel>
+                <usealttexture>library.isscanningvideo</usealttexture>
+            </control>
+            <control type="button" id="612">
+                <description>Go to playlist</description>
+                <include>MediaMenuItemsCommon</include>
+                <label>$LOCALIZE[31056]</label>
+                <onclick>ActivateWindow(videoplaylist)</onclick>
+                <visible>Integer.IsGreater(Playlist.Length(video),0)</visible>
+            </control>
+            <control type="button" id="621">
+                <description>Get more</description>
+                <include>MediaMenuItemsCommon</include>
+                <label>$LOCALIZE[21452]</label>
+                <onclick>ActivateWindow(addonbrowser,addons://more/video/,return)</onclick>
+                <visible>Container.Content(addons)</visible>
+            </control>
+            <control type="button" id="622">
+                <include>MediaMenuItemsCommon</include>
+                <label>$LOCALIZE[31117]</label>
+                <onclick condition="System.AddonIsEnabled(plugin.library.node.editor)">
+                    ActivateWindow(programs,plugin://plugin.library.node.editor/?ltype=video,return)
+                </onclick>
+                <onclick
+                        condition="System.HasAddon(plugin.library.node.editor) + !System.AddonIsEnabled(plugin.library.node.editor)">
+                    EnableAddon(plugin.library.node.editor)
+                </onclick>
+                <onclick condition="!System.HasAddon(plugin.library.node.editor)">
+                    InstallAddon(plugin.library.node.editor)
+                </onclick>
+                <visible>Container.Content() + String.IsEmpty(Container.PluginName)</visible>
+            </control>
+            <control type="button" id="623">
+                <include>MediaMenuItemsCommon</include>
+                <label>$LOCALIZE[31009]</label>
+                <onclick>InstallAddon(resource.images.studios.white)</onclick>
+                <visible>Container.Content(studios) + !System.AddonIsEnabled(resource.images.studios.white)</visible>
+            </control>
+            <control type="button" id="624">
+                <include>MediaMenuItemsCommon</include>
+                <label>$LOCALIZE[10140]</label>
+                <onclick>Addon.OpenSettings($INFO[Container.PluginName])</onclick>
+                <visible>!String.IsEmpty(Container.PluginName)</visible>
+            </control>
+            <include>MediaMenuNowPlaying</include>
+        </control>
+    </include>
+
+    <include name="SCTopBarLabels">
+        <left>35</left>
+        <description>Left side of top bar</description>
+        <top>-7</top>
+        <height>100</height>
+        <orientation>horizontal</orientation>
+        <usecontrolcoords>true</usecontrolcoords>
+        <animation effect="fade" start="0" end="100" time="300">WindowOpen</animation>
+        <animation effect="fade" start="100" end="0" time="200">WindowClose</animation>
+        <animation effect="slide" end="0,16" time="200" reversible="true"
+                   condition="String.IsEmpty(Control.GetLabel(18900))">Conditional
+        </animation>
+        <animation effect="slide" end="70,0" time="200" reversible="true" condition="Control.IsVisible(799)">
+            Conditional
+        </animation>
+        <control type="label">
+            <label>$PARAM[breadcrumbs_label]</label>
+            <include>BreadcrumbsLabel</include>
+            <visible>!String.IsEqual(Container.PluginName,plugin.video.stream-cinema) |
+                String.IsEmpty(Window(home).Property(SCTitle))
+            </visible>
+        </control>
+        <control type="label">
+            <label>$INFO[Window(home).Property(SCTitle)]</label>
+            <include>BreadcrumbsLabel</include>
+            <visible>String.IsEqual(Container.PluginName,plugin.video.stream-cinema) +
+                !String.IsEmpty(Window(home).Property(SCTitle))
+            </visible>
+        </control>
+        <control type="label">
+            <label>$INFO[Container.ShowTitle, / ]</label>
+            <include>BreadcrumbsLabel</include>
+            <visible>!String.IsEmpty(Container.ShowTitle) + !String.IsEqual(Container.ShowTitle,Container.FolderName)
+            </visible>
+        </control>
+        <control type="label">
+            <label>$INFO[Container.FolderName, / ]</label>
+            <include>BreadcrumbsLabel</include>
+            <visible>![Container.Content() + Window.IsActive(videos)]</visible>
+            <visible>![Window.IsActive(MyPVRChannels.xml) | Window.IsActive(MyPVRTimers.xml) |
+                Window.IsActive(MyPVRRecordings.xml) | Window.IsActive(MyPVRSearch.xml)]
+            </visible>
+        </control>
+        <control type="label">
+            <label>$INFO[Container.PluginCategory, / ]</label>
+            <include>BreadcrumbsLabel</include>
+            <visible>!String.isempty(Container.PluginCategory)</visible>
+        </control>
+        <control type="label">
+            <label>$INFO[Control.GetLabel(10),: ]</label>
+            <include>BreadcrumbsLabel</include>
+            <visible>!String.IsEqual(Control.GetLabel(10),$LOCALIZE[16100]) + Window.IsActive(videos)</visible>
+        </control>
+        <control type="label">
+            <left>10</left>
+            <label>($LOCALIZE[31052])</label>
+            <include>BreadcrumbsLabel</include>
+            <visible>Container.Filtered</visible>
+        </control>
+    </include>
+
+    <include name="SCVideoOverlay">
+        <onload condition="Player.HasVideo + !Window.IsVisible(videoosd) + !Player.Paused">
+            SetProperty(DialogMPAATopBar,1,home)
+        </onload>
+        <onload condition="Player.HasVideo + !Window.IsVisible(videoosd) + !Player.Paused">
+            SetProperty(SCDialogVideoInfo,1,home)
+        </onload>
+    </include>
+
+    <!-- nastavenie pre HP -->
+    <include name="SCHomeMenuSettings">
+        <control type="radiobutton" id="900">
+            <label>Stream Cinema Filmy</label>
+            <include>DefaultSettingButton</include>
+            <selected>Skin.HasSetting(sc_home_movies)</selected>
+            <onclick>Skin.ToggleSetting(sc_home_movies)</onclick>
+        </control>
+        <control type="radiobutton" id="9010">
+            <label>- Kategorie</label>
+            <include>DefaultSettingButton</include>
+            <selected>Skin.HasSetting(sc_home_movies_categories)</selected>
+            <onclick>Skin.ToggleSetting(sc_home_movies_categories)</onclick>
+            <enable>Skin.HasSetting(sc_home_movies)</enable>
+        </control>
+        <control type="radiobutton" id="9011">
+            <label>- Posledne sledovane</label>
+            <include>DefaultSettingButton</include>
+            <selected>Skin.HasSetting(sc_home_movies_history)</selected>
+            <onclick>Skin.ToggleSetting(sc_home_movies_history)</onclick>
+            <enable>Skin.HasSetting(sc_home_movies)</enable>
+        </control>
+        <control type="radiobutton" id="9020">
+            <label>- Novinky</label>
+            <include>DefaultSettingButton</include>
+            <selected>Skin.HasSetting(sc_home_movies_new)</selected>
+            <onclick>Skin.ToggleSetting(sc_home_movies_new)</onclick>
+            <enable>Skin.HasSetting(sc_home_movies)</enable>
+        </control>
+        <control type="radiobutton" id="9030">
+            <label>- Kids</label>
+            <include>DefaultSettingButton</include>
+            <selected>Skin.HasSetting(sc_home_movies_kids)</selected>
+            <onclick>Skin.ToggleSetting(sc_home_movies_kids)</onclick>
+            <enable>Skin.HasSetting(sc_home_movies)</enable>
+        </control>
+        <control type="radiobutton" id="9040">
+            <label>- Disney</label>
+            <include>DefaultSettingButton</include>
+            <selected>Skin.HasSetting(sc_home_movies_disney)</selected>
+            <onclick>Skin.ToggleSetting(sc_home_movies_disney)</onclick>
+            <enable>Skin.HasSetting(sc_home_movies)</enable>
+        </control>
+        <control type="radiobutton" id="9050">
+            <label>- HDR</label>
+            <include>DefaultSettingButton</include>
+            <selected>Skin.HasSetting(sc_home_movies_hdr)</selected>
+            <onclick>Skin.ToggleSetting(sc_home_movies_hdr)</onclick>
+            <enable>Skin.HasSetting(sc_home_movies)</enable>
+        </control>
+        <control type="radiobutton" id="9060">
+            <label>- Netflix</label>
+            <include>DefaultSettingButton</include>
+            <selected>Skin.HasSetting(sc_home_movies_netflix)</selected>
+            <onclick>Skin.ToggleSetting(sc_home_movies_netflix)</onclick>
+            <enable>Skin.HasSetting(sc_home_movies)</enable>
+        </control>
+        <control type="radiobutton" id="9070">
+            <label>- Nahodne</label>
+            <include>DefaultSettingButton</include>
+            <selected>Skin.HasSetting(sc_home_movies_random)</selected>
+            <onclick>Skin.ToggleSetting(sc_home_movies_random)</onclick>
+            <enable>Skin.HasSetting(sc_home_movies)</enable>
+        </control>
+        <!-- Serialy -->
+        <control type="radiobutton" id="910">
+            <label>Stream Cinema Serialy</label>
+            <include>DefaultSettingButton</include>
+            <selected>Skin.HasSetting(sc_home_series)</selected>
+            <onclick>Skin.ToggleSetting(sc_home_series)</onclick>
+        </control>
+        <control type="radiobutton" id="9110">
+            <label>- Kategorie</label>
+            <include>DefaultSettingButton</include>
+            <selected>Skin.HasSetting(sc_home_series_categories)</selected>
+            <onclick>Skin.ToggleSetting(sc_home_series_categories)</onclick>
+            <enable>Skin.HasSetting(sc_home_series)</enable>
+        </control>
+        <control type="radiobutton" id="9120">
+            <label>- Novinky</label>
+            <include>DefaultSettingButton</include>
+            <selected>Skin.HasSetting(sc_home_series_new)</selected>
+            <onclick>Skin.ToggleSetting(sc_home_series_new)</onclick>
+            <enable>Skin.HasSetting(sc_home_series)</enable>
+        </control>
+        <control type="radiobutton" id="9130">
+            <label>- Posledne sledovane</label>
+            <include>DefaultSettingButton</include>
+            <selected>Skin.HasSetting(sc_home_series_history)</selected>
+            <onclick>Skin.ToggleSetting(sc_home_series_history)</onclick>
+            <enable>Skin.HasSetting(sc_home_series)</enable>
+        </control>
+        <control type="radiobutton" id="9140">
+            <label>- Kids</label>
+            <include>DefaultSettingButton</include>
+            <selected>Skin.HasSetting(sc_home_series_kids)</selected>
+            <onclick>Skin.ToggleSetting(sc_home_series_kids)</onclick>
+            <enable>Skin.HasSetting(sc_home_series)</enable>
+        </control>
+        <control type="radiobutton" id="9150">
+            <label>- Nahodne</label>
+            <include>DefaultSettingButton</include>
+            <selected>Skin.HasSetting(sc_home_series_random)</selected>
+            <onclick>Skin.ToggleSetting(sc_home_series_random)</onclick>
+            <enable>Skin.HasSetting(sc_home_series)</enable>
+        </control>
+        <!-- Koncerty -->
+        <control type="radiobutton" id="920">
+            <label>Stream Cinema Koncerty</label>
+            <include>DefaultSettingButton</include>
+            <selected>Skin.HasSetting(sc_home_concerts)</selected>
+            <onclick>Skin.ToggleSetting(sc_home_concerts)</onclick>
+        </control>
+        <!-- Dokumentarne -->
+        <control type="radiobutton" id="930">
+            <label>Stream Cinema Dokumentarne</label>
+            <include>DefaultSettingButton</include>
+            <selected>Skin.HasSetting(sc_home_documentary)</selected>
+            <onclick>Skin.ToggleSetting(sc_home_documentary)</onclick>
+        </control>
+        <!-- Anime -->
+        <control type="radiobutton" id="940">
+            <label>Stream Cinema Anime</label>
+            <include>DefaultSettingButton</include>
+            <selected>Skin.HasSetting(sc_home_anime)</selected>
+            <onclick>Skin.ToggleSetting(sc_home_anime)</onclick>
+        </control>
+        <!-- Sport -->
+        <control type="radiobutton" id="950">
+            <label>Stream Cinema Sport</label>
+            <include>DefaultSettingButton</include>
+            <selected>Skin.HasSetting(sc_home_sport)</selected>
+            <onclick>Skin.ToggleSetting(sc_home_sport)</onclick>
+        </control>
+    </include>
+</includes>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window type="dialog" id="2309">
+    <animation effect="fade" delay="600" start="0" end="100" time="400">WindowOpen</animation>
+    <animation effect="fade" start="100" end="0" time="500">WindowClose</animation>
+    <visible>!String.IsEmpty(Window(Home).Property(DialogMPAATopBar))</visible>
+    <onload>AlarmClock(CloseMPAATopBar,ClearProperty(DialogMPAATopBar,Home),00:05,silent)</onload>
+
+    <controls>
+        <control type="group">
+            <visible>!Window.IsActive(videoosd) + Window.IsVisible(fullscreenvideo)</visible>
+            <visible>!String.IsEmpty(VideoPlayer.MPAA) + !String.Contains(VideoPlayer.MPAA,not rated) + !String.Contains(VideoPlayer.MPAA,n/a) + !String.Contains(VideoPlayer.MPAA,nr)</visible>
+
+            <control type="image">
+                <top>0</top>
+                <left>0</left>
+                <width>100%</width>
+                <height>100%</height>
+                <texture background="true">diffuse/gradient_subtle.png</texture>
+                <aspectratio scalediffuse="true">scale</aspectratio>
+            </control>
+            <control type="grouplist">
+                <left>85</left>
+                <top>85</top>
+                <height>80</height>
+                <orientation>horizontal</orientation>
+                <itemgap>25</itemgap>
+                <usecontrolcoords>true</usecontrolcoords>
+                <control type="image">
+                    <animation effect="zoom" end="100,1200" easing="inout" tween="sine" time="350" delay="700" condition="true">WindowOpen</animation>
+                    <width>5</width>
+                    <height>6</height>
+                    <texture>colors/color_white.png</texture>
+                    <colordiffuse>FFFF0000</colordiffuse>
+                    <aspectratio>stretch</aspectratio>
+                </control>
+                <control type="label">
+                    <width>auto</width>
+                    <top>30</top>
+                    <height>64</height>
+                    <align>left</align>
+                    <aligny>bottom</aligny>
+                    <font>font13</font>
+                    <textcolor>white</textcolor>
+                    <shadowcolor>CD000000</shadowcolor>
+                    <label>$VAR[SCVideoRatingTopBarLabel]</label>
+<!--                    <visible>String.IsEmpty($VAR[SCVideoRatingTopBarLogo])</visible>-->
+                </control>
+<!--                <control type="image">-->
+<!--                    <width>64</width>-->
+<!--                    <height>64</height>-->
+<!--                    <texture>$VAR[SCVideoRatingTopBarLogo]</texture>-->
+<!--                    <aspectratio scalediffuse="true">scale</aspectratio>-->
+<!--                    <visible>!String.IsEmpty($VAR[SCVideoRatingTopBarLogo])</visible>-->
+<!--                </control>-->
+            </control>
+        </control>
+    </controls>
+</window>
