@@ -23,11 +23,11 @@
                 <param name="posy" value="250"/>
             </include>
             <control type="panel" id="$PARAM[list_id]">
-                <left>0</left>
-                <top>115</top>
                 <visible>Integer.IsGreater(Container($PARAM[list_id]).NumItems,0) |
                     Container($PARAM[list_id]).IsUpdating
                 </visible>
+                <left>0</left>
+                <top>115</top>
                 <right>0</right>
                 <height>503</height>
                 <include content="WidgetListCommon">
@@ -72,7 +72,8 @@
         <definition>
             <!-- nema poster vratane poster_default -->
             <control type="group">
-                <visible>String.IsEmpty(ListItem.Art(poster)) | String.Contains(ListItem.Art(poster),poster_default)</visible>
+                <visible>String.IsEmpty(ListItem.Art(poster)) | String.Contains(ListItem.Art(poster),poster_default)
+                </visible>
                 <control type="image">
                     <left>15</left>
                     <top>-10</top>
@@ -116,7 +117,8 @@
             </control>
             <!-- ma poster -->
             <control type="group">
-                <visible>!String.IsEmpty(ListItem.Art(poster)) + !String.Contains(ListItem.Art(poster),poster_default)</visible>
+                <visible>!String.IsEmpty(ListItem.Art(poster)) + !String.Contains(ListItem.Art(poster),poster_default)
+                </visible>
                 <control type="image">
                     <left>11</left>
                     <top>-14</top>
@@ -211,7 +213,7 @@
                 <texturebg></texturebg>
                 <midtexture colordiffuse="button_focus" border="3">progress/texturebg_alt_white.png</midtexture>
                 <info>$NUMBER[$INFO[ListItem.Property(PercentPlayed)]]</info>
-                <visible>!Integer.IsEqual($NUMBER[$INFO[ListItem.Property(PercentPlayed)]],0)</visible>
+                <visible>!Integer.IsEqual($NUMBER[ListItem.Property(PercentPlayed)],0)</visible>
             </control>
         </definition>
     </include>
@@ -250,177 +252,78 @@
     </include>
 
     <include name="SCMovieList">
-        <include content="WidgetListCategories" condition="Skin.HasSetting(sc_home_movies_categories)">
-            <param name="content_path"
-                   value="plugin://plugin.video.stream-cinema/?url=2f464d6f76696573"/>
-            <param name="additional_movie_items" value="true"/>
-            <param name="widget_header" value="$LOCALIZE[23900]"/>
-            <param name="widget_target" value="videos"/>
-            <param name="list_id" value="5901"/>
-        </include>
-        <include content="SCWidgetListPoster" condition="Skin.HasSetting(sc_home_movies_history)">
-            <param name="content_path"
-                   value="plugin://plugin.video.stream-cinema/?action=6c617374&amp;id=6c61737466&amp;title=646972"/>
-            <param name="widget_header" value="Posledne sledovane"/>
-            <param name="widget_target" value="videos"/>
-            <param name="list_id" value="5902"/>
-        </include>
-        <include content="SCWidgetListPoster" condition="Skin.HasSetting(sc_home_movies_new)">
-            <param name="content_path"
-                   value="plugin://plugin.video.stream-cinema/?url=2f464d6f766965732f6c6174657374643f6c696d69743d3135"/>
-            <param name="widget_header" value="Novinky"/>
-            <param name="widget_target" value="videos"/>
-            <param name="list_id" value="5903"/>
-        </include>
-        <include content="SCWidgetListPoster" condition="Skin.HasSetting(sc_home_movies_kids)">
-            <param name="content_path"
-                   value="plugin://plugin.video.stream-cinema/?url=2f46696c7465722f3f7479703d312670673d30266475623d3126723d3e363026793d3e32303130266f663d72616e646f6d266f643d64657363266c696d69743d323026706167653d31266d3d36"/>
-            <param name="widget_header" value="Kids"/>
-            <param name="widget_target" value="videos"/>
-            <param name="list_id" value="5904"/>
-        </include>
-        <include content="SCWidgetListPoster" condition="Skin.HasSetting(sc_home_movies_disney)">
-            <param name="content_path"
-                   value="plugin://plugin.video.stream-cinema/?url=2f5365617263682f6765744c6973742f3836"/>
-            <param name="widget_header" value="Disney"/>
-            <param name="widget_target" value="videos"/>
-            <param name="list_id" value="5905"/>
-        </include>
-        <include content="SCWidgetListPoster" condition="Skin.HasSetting(sc_home_movies_hdr)">
-            <param name="content_path"
-                   value="plugin://plugin.video.stream-cinema/?url=2f464844522f6c61746573743f6c696d69743d32302670673d30"/>
-            <param name="widget_header" value="HDR"/>
-            <param name="widget_target" value="videos"/>
-            <param name="list_id" value="5906"/>
-        </include>
-        <include content="SCWidgetListPoster" condition="Skin.HasSetting(sc_home_movies_netflix)">
-            <param name="content_path"
-                   value="plugin://plugin.video.stream-cinema/?url=2f5365617263682f6765744c6973742f39393f6c696d69743d3330266f663d6d696e64617465266f643d64657363"/>
-            <param name="widget_header" value="Netflix"/>
-            <param name="widget_target" value="videos"/>
-            <param name="list_id" value="5907"/>
-        </include>
-        <include content="SCWidgetListPoster" condition="Skin.HasSetting(sc_home_movies_random)">
-            <param name="content_path"
-                   value="plugin://plugin.video.stream-cinema/?url=2f46696c7465722f3f7479703d312670673d3026723d3e363026793d3e32303130266f663d72616e646f6d266f643d64657363266c696d69743d323026706167653d31"/>
-            <param name="widget_header" value="Nahodne"/>
-            <param name="widget_target" value="videos"/>
-            <param name="list_id" value="5908"/>
-        </include>
     </include>
 
     <include name="SCSeriesList">
-        <include content="SCWidgetListPoster" condition="Skin.HasSetting(sc_home_series_categories)">
-            <param name="content_path"
-                   value="plugin://plugin.video.stream-cinema/?url=2f46536572696573"/>
-            <param name="additional_movie_items" value="true"/>
-            <param name="widget_header" value="$LOCALIZE[23900]"/>
-            <param name="widget_target" value="videos"/>
-            <param name="list_id" value="6001"/>
-        </include>
-        <include content="SCWidgetListPoster" condition="Skin.HasSetting(sc_home_series_new)">
-            <param name="content_path"
-                   value="plugin://plugin.video.stream-cinema/?url=2f465365726965732f6c617465737474"/>
-            <param name="widget_header" value="Novinky"/>
-            <param name="widget_target" value="videos"/>
-            <param name="list_id" value="6002"/>
-        </include>
-        <include content="SCWidgetListPoster" condition="Skin.HasSetting(sc_home_series_history)">
-            <param name="content_path"
-                   value="plugin://plugin.video.stream-cinema/?action=6c617374&amp;id=6c61737473&amp;title=646972"/>
-            <param name="widget_header" value="Posledne sledovane"/>
-            <param name="widget_target" value="videos"/>
-            <param name="list_id" value="6003"/>
-        </include>
-        <include content="SCWidgetListPoster" condition="Skin.HasSetting(sc_home_series_kids)">
-            <param name="content_path"
-                   value="plugin://plugin.video.stream-cinema/?url=2f465365726965732f6b696473"/>
-            <param name="widget_header" value="Kids"/>
-            <param name="widget_target" value="videos"/>
-            <param name="list_id" value="6004"/>
-        </include>
-        <include content="SCWidgetListPoster" condition="Skin.HasSetting(sc_home_series_random)">
-            <param name="content_path"
-                   value="plugin://plugin.video.stream-cinema/?url=2f46696c7465722f3f7479703d322670673d30266475623d3126723d3e363026793d3e32303130266f663d72616e646f6d266f643d64657363266c696d69743d323026706167653d31"/>
-            <param name="widget_header" value="Nahodne"/>
-            <param name="widget_target" value="videos"/>
-            <param name="list_id" value="6005"/>
-        </include>
     </include>
 
     <include name="SCConcertsList">
         <include content="SCWidgetListPoster">
             <param name="content_path"
-                   value="plugin://plugin.video.stream-cinema/?url=2f464b6f6e636572742f6c6174657374"/>
-            <param name="additional_movie_items" value="true"/>
+                   value="plugin://plugin.video.stream-cinema/?url=2f464b6f6e636572742f6c6174657374&amp;widget=1"/>
             <param name="widget_header" value="Nove"/>
             <param name="widget_target" value="videos"/>
-            <param name="list_id" value="6101"/>
+            <param name="list_id" value="5914"/>
         </include>
         <include content="SCWidgetListPoster">
             <param name="content_path"
-                   value="plugin://plugin.video.stream-cinema/?action=6c617374&amp;id=6c6173746b&amp;title=646972"/>
+                   value="plugin://plugin.video.stream-cinema/?action=6c617374&amp;id=6c6173746b&amp;title=646972&amp;widget=1"/>
             <param name="additional_movie_items" value="true"/>
             <param name="widget_header" value="Posledne sledovane"/>
             <param name="widget_target" value="videos"/>
-            <param name="list_id" value="6102"/>
+            <param name="list_id" value="5915"/>
         </include>
     </include>
 
     <include name="SCDocumentsList">
         <include content="SCWidgetListPoster">
             <param name="content_path"
-                   value="plugin://plugin.video.stream-cinema/?url=2f46446f63752f6c6174657374"/>
-            <param name="additional_movie_items" value="true"/>
+                   value="plugin://plugin.video.stream-cinema/?url=2f46446f63752f6c6174657374&amp;widget=1"/>
             <param name="widget_header" value="Nove"/>
             <param name="widget_target" value="videos"/>
-            <param name="list_id" value="6201"/>
+            <param name="list_id" value="5916"/>
         </include>
         <include content="SCWidgetListPoster">
             <param name="content_path"
-                   value="plugin://plugin.video.stream-cinema/?action=6c617374&amp;id=6c61737464&amp;title=646972"/>
-            <param name="additional_movie_items" value="true"/>
+                   value="plugin://plugin.video.stream-cinema/?action=6c617374&amp;id=6c61737464&amp;title=646972&amp;widget=1"/>
             <param name="widget_header" value="Posledne sledovane"/>
             <param name="widget_target" value="videos"/>
-            <param name="list_id" value="6202"/>
+            <param name="list_id" value="5917"/>
         </include>
     </include>
 
     <include name="SCAnimeList">
         <include content="SCWidgetListPoster">
             <param name="content_path"
-                   value="plugin://plugin.video.stream-cinema/?url=2f46416e696d652f4d6f76696573"/>
-            <param name="additional_movie_items" value="true"/>
+                   value="plugin://plugin.video.stream-cinema/?url=2f46416e696d652f4d6f76696573&amp;widget=1"/>
             <param name="widget_header" value="Filmy"/>
             <param name="widget_target" value="videos"/>
-            <param name="list_id" value="6301"/>
+            <param name="list_id" value="5918"/>
         </include>
         <include content="SCWidgetListPoster">
             <param name="content_path"
-                   value="plugin://plugin.video.stream-cinema/?url=2f46416e696d652f536572696573"/>
-            <param name="additional_movie_items" value="true"/>
+                   value="plugin://plugin.video.stream-cinema/?url=2f46416e696d652f536572696573&amp;widget=1"/>
             <param name="widget_header" value="Serialy"/>
             <param name="widget_target" value="videos"/>
-            <param name="list_id" value="6302"/>
+            <param name="list_id" value="5919"/>
         </include>
         <include content="SCWidgetListPoster">
             <param name="content_path"
-                   value="plugin://plugin.video.stream-cinema/?action=6c617374&amp;id=6c61737464&amp;title=646972"/>
-            <param name="additional_movie_items" value="true"/>
+                   value="plugin://plugin.video.stream-cinema/?action=6c617374&amp;id=6c61737464&amp;title=646972&amp;widget=1"/>
             <param name="widget_header" value="Posledne sledovane"/>
             <param name="widget_target" value="videos"/>
-            <param name="list_id" value="6303"/>
+            <param name="list_id" value="5920"/>
         </include>
     </include>
 
     <include name="SCSportList">
         <include content="SCWidgetListPoster">
             <param name="content_path"
-                   value="plugin://plugin.video.stream-cinema/?url=2f4653706f7274"/>
-            <param name="additional_movie_items" value="true"/>
+                   value="plugin://plugin.video.stream-cinema/?url=2f4653706f7274&amp;widget=1"/>
+            <!--            <param name="additional_movie_items" value="true"/>-->
             <param name="widget_header" value="Nove"/>
             <param name="widget_target" value="videos"/>
-            <param name="list_id" value="6401"/>
+            <param name="list_id" value="5921"/>
         </include>
     </include>
 
@@ -440,7 +343,7 @@
             <onclick>
                 ActivateWindow(Videos,plugin://plugin.video.stream-cinema/?url=2f46536572696573,return)
             </onclick>
-            <property name="menu_id">$NUMBER[23901]</property>
+            <property name="menu_id">$NUMBER[24903]</property>
             <thumb>icons/sidemenu/movies.png</thumb>
             <property name="id">sc-series</property>
             <visible>Skin.HasSetting(sc_home_series)</visible>
@@ -450,7 +353,7 @@
             <onclick>
                 ActivateWindow(Videos,plugin://plugin.video.stream-cinema/?url=2f464b6f6e63657274,return)
             </onclick>
-            <property name="menu_id">$NUMBER[23902]</property>
+            <property name="menu_id">$NUMBER[23905]</property>
             <thumb>icons/sidemenu/movies.png</thumb>
             <property name="id">sc-concerts</property>
             <visible>Skin.HasSetting(sc_home_concerts)</visible>
@@ -460,7 +363,7 @@
             <onclick>
                 ActivateWindow(Videos,plugin://plugin.video.stream-cinema/?url=2f46446f6375,return)
             </onclick>
-            <property name="menu_id">$NUMBER[23903]</property>
+            <property name="menu_id">$NUMBER[23907]</property>
             <thumb>icons/sidemenu/movies.png</thumb>
             <property name="id">sc-documents</property>
             <visible>Skin.HasSetting(sc_home_documentary)</visible>
@@ -470,7 +373,7 @@
             <onclick>
                 ActivateWindow(Videos,plugin://plugin.video.stream-cinema/?url=2f46416e696d65,return)
             </onclick>
-            <property name="menu_id">$NUMBER[23904]</property>
+            <property name="menu_id">$NUMBER[23909]</property>
             <thumb>icons/sidemenu/movies.png</thumb>
             <property name="id">sc-anime</property>
             <visible>Skin.HasSetting(sc_home_anime)</visible>
@@ -480,7 +383,7 @@
             <onclick>
                 ActivateWindow(Videos,plugin://plugin.video.stream-cinema/?url=2f4653706f7274,return)
             </onclick>
-            <property name="menu_id">$NUMBER[23905]</property>
+            <property name="menu_id">$NUMBER[23911]</property>
             <thumb>icons/sidemenu/movies.png</thumb>
             <property name="id">sc-sport</property>
             <visible>Skin.HasSetting(sc_home_sport)</visible>
@@ -490,92 +393,189 @@
     <include name="SCHomeRightMenuMovies">
         <!-- filmy -->
         <control type="group" id="23900">
-            <visible>String.IsEqual(Container(9000).ListItem.Property(id),sc-movies)</visible>
+            <visible>Skin.HasSetting(sc_home_movies) + String.IsEqual(Container(9000).ListItem.Property(id),sc-movies)
+            </visible>
             <include content="Visible_Right_Delayed">
                 <param name="id" value="sc-movies"/>
             </include>
             <control type="grouplist" id="23901">
                 <include>WidgetGroupListCommon</include>
-                <pagecontrol>5010</pagecontrol>
-                <include>SCMovieList</include>
+                <pagecontrol>5011</pagecontrol>
+                <include content="WidgetListCategories" condition="Skin.HasSetting(sc_home_movies_categories)">
+                    <param name="content_path"
+                           value="plugin://plugin.video.stream-cinema/?url=2f464d6f76696573"/>
+                    <param name="widget_header" value="Kategorie"/>
+                    <param name="widget_target" value="videos"/>
+                    <param name="list_id" value="5901"/>
+                </include>
+                <include content="SCWidgetListPoster" condition="Skin.HasSetting(sc_home_movies_history)">
+                    <param name="content_path"
+                           value="plugin://plugin.video.stream-cinema/?action=6c617374&amp;id=6c61737466&amp;title=646972&amp;widget=1"/>
+                    <param name="widget_header" value="Posledne sledovane"/>
+                    <param name="widget_target" value="videos"/>
+                    <param name="list_id" value="5902"/>
+                </include>
+                <include content="SCWidgetListPoster" condition="Skin.HasSetting(sc_home_movies_new)">
+                    <param name="content_path"
+                           value="plugin://plugin.video.stream-cinema/?url=2f464d6f766965732f6c6174657374643f6c696d69743d3135&amp;widget=1"/>
+                    <param name="widget_header" value="Novinky"/>
+                    <param name="widget_target" value="videos"/>
+                    <param name="list_id" value="5903"/>
+                </include>
+                <include content="SCWidgetListPoster" condition="Skin.HasSetting(sc_home_movies_kids)">
+                    <param name="content_path"
+                           value="plugin://plugin.video.stream-cinema/?url=2f46696c7465722f3f7479703d312670673d30266475623d3126723d3e363026793d3e32303130266f663d72616e646f6d266f643d64657363266c696d69743d323026706167653d31266d3d36&amp;widget=1"/>
+                    <param name="widget_header" value="Kids"/>
+                    <param name="widget_target" value="videos"/>
+                    <param name="list_id" value="5904"/>
+                </include>
+                <include content="SCWidgetListPoster" condition="Skin.HasSetting(sc_home_movies_disney)">
+                    <param name="content_path"
+                           value="plugin://plugin.video.stream-cinema/?url=2f5365617263682f6765744c6973742f3836&amp;widget=1"/>
+                    <param name="widget_header" value="Disney"/>
+                    <param name="widget_target" value="videos"/>
+                    <param name="list_id" value="5905"/>
+                </include>
+                <include content="SCWidgetListPoster" condition="Skin.HasSetting(sc_home_movies_hdr)">
+                    <param name="content_path"
+                           value="plugin://plugin.video.stream-cinema/?url=2f464844522f6c61746573743f6c696d69743d32302670673d30&amp;widget=1"/>
+                    <param name="widget_header" value="HDR"/>
+                    <param name="widget_target" value="videos"/>
+                    <param name="list_id" value="5906"/>
+                </include>
+                <include content="SCWidgetListPoster" condition="Skin.HasSetting(sc_home_movies_netflix)">
+                    <param name="content_path"
+                           value="plugin://plugin.video.stream-cinema/?url=2f5365617263682f6765744c6973742f39393f6c696d69743d3330266f663d6d696e64617465266f643d64657363&amp;widget=1"/>
+                    <param name="widget_header" value="Netflix"/>
+                    <param name="widget_target" value="videos"/>
+                    <param name="list_id" value="5907"/>
+                </include>
+                <include content="SCWidgetListPoster" condition="Skin.HasSetting(sc_home_movies_random)">
+                    <param name="content_path"
+                           value="plugin://plugin.video.stream-cinema/?url=2f46696c7465722f3f7479703d312670673d3026723d3e363026793d3e32303130266f663d72616e646f6d266f643d64657363266c696d69743d323026706167653d31&amp;widget=1"/>
+                    <param name="widget_header" value="Nahodne"/>
+                    <param name="widget_target" value="videos"/>
+                    <param name="list_id" value="5908"/>
+                </include>
             </control>
             <include content="WidgetScrollbar" condition="Skin.HasSetting(touchmode)">
-                <param name="scrollbar_id" value="5010"/>
+                <param name="scrollbar_id" value="5011"/>
             </include>
         </control>
         <!-- serialy -->
-        <control type="group" id="23902">
-            <visible>String.IsEqual(Container(9000).ListItem.Property(id),sc-series)</visible>
+        <control type="group" id="24902">
+            <visible>Skin.HasSetting(sc_home_series) + String.IsEqual(Container(9000).ListItem.Property(id),sc-series)
+            </visible>
             <include content="Visible_Right_Delayed">
                 <param name="id" value="sc-series"/>
             </include>
-            <control type="grouplist" id="23903">
+            <control type="grouplist" id="24903">
                 <include>WidgetGroupListCommon</include>
-                <pagecontrol>5010</pagecontrol>
-                <include>SCSeriesList</include>
+                <pagecontrol>5012</pagecontrol>
+                <include content="WidgetListCategories" condition="Skin.HasSetting(sc_home_movies_categories)">
+                    <param name="content_path"
+                           value="plugin://plugin.video.stream-cinema/?url=2f46536572696573"/>
+                    <param name="widget_header" value="Kategorie"/>
+                    <param name="widget_target" value="videos"/>
+                    <param name="list_id" value="5909"/>
+                </include>
+                <include content="SCWidgetListPoster" condition="Skin.HasSetting(sc_home_series_new)">
+                    <param name="content_path"
+                           value="plugin://plugin.video.stream-cinema/?url=2f465365726965732f6c617465737474&amp;widget=1"/>
+                    <param name="widget_header" value="Novinky"/>
+                    <param name="widget_target" value="videos"/>
+                    <param name="list_id" value="5910"/>
+                </include>
+                <include content="SCWidgetListPoster" condition="Skin.HasSetting(sc_home_series_history)">
+                    <param name="content_path"
+                           value="plugin://plugin.video.stream-cinema/?action=6c617374&amp;id=6c61737473&amp;title=646972&amp;widget=1"/>
+                    <param name="widget_header" value="Posledne sledovane"/>
+                    <param name="widget_target" value="videos"/>
+                    <param name="list_id" value="5911"/>
+                </include>
+                <include content="SCWidgetListPoster" condition="Skin.HasSetting(sc_home_series_kids)">
+                    <param name="content_path"
+                           value="plugin://plugin.video.stream-cinema/?url=2f465365726965732f6b696473&amp;widget=1"/>
+                    <param name="widget_header" value="Kids"/>
+                    <param name="widget_target" value="videos"/>
+                    <param name="list_id" value="5912"/>
+                </include>
+                <include content="SCWidgetListPoster" condition="Skin.HasSetting(sc_home_series_random)">
+                    <param name="content_path"
+                           value="plugin://plugin.video.stream-cinema/?url=2f46696c7465722f3f7479703d322670673d30266475623d3126723d3e363026793d3e32303130266f663d72616e646f6d266f643d64657363266c696d69743d323026706167653d31&amp;widget=1"/>
+                    <param name="widget_header" value="Nahodne"/>
+                    <param name="widget_target" value="videos"/>
+                    <param name="list_id" value="5913"/>
+                </include>
             </control>
             <include content="WidgetScrollbar" condition="Skin.HasSetting(touchmode)">
-                <param name="scrollbar_id" value="5010"/>
+                <param name="scrollbar_id" value="5012"/>
             </include>
         </control>
         <!-- koncerty -->
         <control type="group" id="23904">
-            <visible>String.IsEqual(Container(9000).ListItem.Property(id),sc-concerts)</visible>
+            <visible>Skin.HasSetting(sc_home_concerts) +
+                String.IsEqual(Container(9000).ListItem.Property(id),sc-concerts)
+            </visible>
             <include content="Visible_Right_Delayed">
                 <param name="id" value="sc-concerts"/>
             </include>
             <control type="grouplist" id="23905">
                 <include>WidgetGroupListCommon</include>
-                <pagecontrol>5010</pagecontrol>
-                <include>SCConcertsList</include>
+                <pagecontrol>5013</pagecontrol>
+                <include condition="Skin.HasSetting(sc_home_concerts)">SCConcertsList</include>
             </control>
             <include content="WidgetScrollbar" condition="Skin.HasSetting(touchmode)">
-                <param name="scrollbar_id" value="5010"/>
+                <param name="scrollbar_id" value="5013"/>
             </include>
         </control>
         <!-- dokumentarne -->
         <control type="group" id="23906">
-            <visible>String.IsEqual(Container(9000).ListItem.Property(id),sc-documents)</visible>
+            <visible>Skin.HasSetting(sc_home_documentary) +
+                String.IsEqual(Container(9000).ListItem.Property(id),sc-documents)
+            </visible>
             <include content="Visible_Right_Delayed">
                 <param name="id" value="sc-documents"/>
             </include>
             <control type="grouplist" id="23907">
                 <include>WidgetGroupListCommon</include>
-                <pagecontrol>5010</pagecontrol>
-                <include>SCDocumentsList</include>
+                <pagecontrol>5014</pagecontrol>
+                <include condition="Skin.HasSetting(sc_home_documentary)">SCDocumentsList</include>
             </control>
             <include content="WidgetScrollbar" condition="Skin.HasSetting(touchmode)">
-                <param name="scrollbar_id" value="5010"/>
+                <param name="scrollbar_id" value="5014"/>
             </include>
         </control>
         <!-- anime -->
         <control type="group" id="23908">
-            <visible>String.IsEqual(Container(9000).ListItem.Property(id),sc-anime)</visible>
+            <visible>Skin.HasSetting(sc_home_anime) + String.IsEqual(Container(9000).ListItem.Property(id),sc-anime)
+            </visible>
             <include content="Visible_Right_Delayed">
                 <param name="id" value="sc-anime"/>
             </include>
             <control type="grouplist" id="23909">
                 <include>WidgetGroupListCommon</include>
-                <pagecontrol>5010</pagecontrol>
-                <include>SCAnimeList</include>
+                <pagecontrol>5015</pagecontrol>
+                <include condition="Skin.HasSetting(sc_home_anime)">SCAnimeList</include>
             </control>
             <include content="WidgetScrollbar" condition="Skin.HasSetting(touchmode)">
-                <param name="scrollbar_id" value="5010"/>
+                <param name="scrollbar_id" value="5015"/>
             </include>
         </control>
         <!-- sport -->
         <control type="group" id="23910">
-            <visible>String.IsEqual(Container(9000).ListItem.Property(id),sc-sport)</visible>
+            <visible>Skin.HasSetting(sc_home_sport) + String.IsEqual(Container(9000).ListItem.Property(id),sc-sport)
+            </visible>
             <include content="Visible_Right_Delayed">
                 <param name="id" value="sc-sport"/>
             </include>
             <control type="grouplist" id="23911">
                 <include>WidgetGroupListCommon</include>
-                <pagecontrol>5010</pagecontrol>
-                <include>SCSportList</include>
+                <pagecontrol>5016</pagecontrol>
+                <include condition="Skin.HasSetting(sc_home_sport)">SCSportList</include>
             </control>
             <include content="WidgetScrollbar" condition="Skin.HasSetting(touchmode)">
-                <param name="scrollbar_id" value="5010"/>
+                <param name="scrollbar_id" value="5016"/>
             </include>
         </control>
     </include>
@@ -922,5 +922,28 @@
             <selected>Skin.HasSetting(sc_home_sport)</selected>
             <onclick>Skin.ToggleSetting(sc_home_sport)</onclick>
         </control>
+    </include>
+
+    <include name="SCHPSearch">
+        <item>
+            <label>[B]Filmy[/B] na Stream Cinema</label>
+            <onclick>Dialog.Close(all)</onclick>
+            <onclick>ActivateWindow(videos,"plugin://plugin.video.stream-cinema/?action=63736561726368&amp;id=7365617263682d6d6f766965",return)</onclick>
+        </item>
+        <item>
+            <label>[B]Seriály[/B] na Stream Cinema</label>
+            <onclick>Dialog.Close(all)</onclick>
+            <onclick>ActivateWindow(videos,"plugin://plugin.video.stream-cinema/?action=63736561726368&amp;id=7365617263682d736572696573",return)</onclick>
+        </item>
+        <item>
+            <label>[B]Ľudia[/B] (filmy) na Stream Cinema</label>
+            <onclick>Dialog.Close(all)</onclick>
+            <onclick>ActivateWindow(videos,"plugin://plugin.video.stream-cinema/?action=63736561726368&amp;id=7365617263682d70656f706c652d6d6f766965",return)</onclick>
+        </item>
+        <item>
+            <label>[B]Ľudia[/B] (seriály) na Stream Cinema</label>
+            <onclick>Dialog.Close(all)</onclick>
+            <onclick>ActivateWindow(videos,"plugin://plugin.video.stream-cinema/?action=63736561726368&amp;id=7365617263682d70656f706c652d736572696573",return)</onclick>
+        </item>
     </include>
 </includes>

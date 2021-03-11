@@ -17,6 +17,7 @@
 			<control type="panel" id="9000">
 				<include>ButtonMenuList</include>
 				<content>
+					<include content="SCHPSearch" condition="System.AddonIsEnabled(plugin.video.stream-cinema)"></include>
 					<item>
 						<label>$LOCALIZE[31113]</label>
 						<onclick>Dialog.Close(all)</onclick>
