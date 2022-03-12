@@ -292,9 +292,12 @@
 					<top>158</top>
 					<width>1235</width>
 					<height>370</height>
-					<onup condition="System.AddonIsEnabled(script.embuary.info) + Control.HasFocus(50) + !String.IsEqual(ListItem.DBType,set)">RunScript(script.embuary.info,call=person,query='$ESCINFO[Container(50).ListItem.Label]')</onup>
-					<onup condition="System.HasAddon(script.embuary.info) + !System.AddonIsEnabled(script.embuary.info) + !String.IsEqual(ListItem.DBType,set)">EnableAddon(script.embuary.info)</onup>
-					<onup condition="!System.HasAddon(script.embuary.info) + !String.IsEqual(ListItem.DBType,set)">InstallAddon(script.embuary.info)</onup>
+					<onup condition="!String.IsEqual(Container.PluginName,plugin.video.stream-cinema) + System.AddonIsEnabled(script.embuary.info) + Control.HasFocus(50) + !String.IsEqual(ListItem.DBType,set)">RunScript(script.embuary.info,call=person,query='$ESCINFO[Container(50).ListItem.Label]')</onup>
+					<onup condition="!String.IsEqual(Container.PluginName,plugin.video.stream-cinema) + System.HasAddon(script.embuary.info) + !System.AddonIsEnabled(script.embuary.info) + !String.IsEqual(ListItem.DBType,set)">EnableAddon(script.embuary.info)</onup>
+					<onup condition="!String.IsEqual(Container.PluginName,plugin.video.stream-cinema) + !System.HasAddon(script.embuary.info) + !String.IsEqual(ListItem.DBType,set)">InstallAddon(script.embuary.info)</onup>
+					<onup condition="String.IsEqual(Container.PluginName,plugin.video.stream-cinema)">Dialog.Close(all,true)</onup>
+					<onup condition="String.IsEqual(Container.PluginName,plugin.video.stream-cinema)">RunScript(plugin.video.stream-cinema,-1,query='$ESCINFO[Container(50).ListItem.Label]')</onup>
+<!--					<onup condition="String.IsEqual(Container.PluginName,plugin.video.stream-cinema)">ActivateWindow(Videos,plugin://plugin.video.stream-cinema/?search=$INFO[Container(50).ListItem.Label]&amp;id=search-people-series&amp;ms=1,return)</onup>-->
 					<onleft>50</onleft>
 					<onright>50</onright>
 					<ondown>140</ondown>

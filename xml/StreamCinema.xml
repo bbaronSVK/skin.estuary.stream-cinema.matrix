@@ -7,14 +7,48 @@
     </variable>
 
     <variable name="SCVideoRatingTopBarLogo">
-        <value condition="String.IsEqual(VideoPlayer.MPAA,0)String.IsEqual(VideoPlayer.MPAA,6)|String.IsEqual(VideoPlayer.MPAA,12)|String.IsEqual(VideoPlayer.MPAA,15)|String.IsEqual(VideoPlayer.MPAA,18)">
+        <value condition="String.IsEqual(VideoPlayer.MPAA,0)|String.IsEqual(VideoPlayer.MPAA,6)|String.IsEqual(VideoPlayer.MPAA,12)|String.IsEqual(VideoPlayer.MPAA,15)|String.IsEqual(VideoPlayer.MPAA,18)">
             $INFO[VideoPlayer.MPAA,certify/p-,.png]
         </value>
     </variable>
 
+    <variable name="SCAutoCompletionContentVar">
+		<value condition="System.AddonIsEnabled(plugin.program.autocompletion) + !System.HasHiddenInput + !String.IsEqual(Container.PluginName,plugin.video.stream-cinema)">plugin://plugin.program.autocompletion?info=autocomplete&amp;&amp;id=$INFO[Control.GetLabel(312).index(1)]&amp;&amp;limit=9</value>
+        <value condition="System.AddonIsEnabled(plugin.program.autocompletion) + !System.HasHiddenInput + String.IsEqual(Container.PluginName,plugin.video.stream-cinema)">plugin://plugin.video.stream-cinema?action=6175746f636f6d706c6574&amp;id=search&amp;f=$INFO[Window(Home).Property(SC.search)]&amp;name=$INFO[Control.GetLabel(312).index(1)]</value>
+        <value condition="!System.AddonIsEnabled(plugin.program.autocompletion) + !System.HasHiddenInput + String.IsEqual(Container.PluginName,plugin.video.stream-cinema)">plugin://plugin.video.stream-cinema?action=6175746f636f6d706c6574&amp;id=search&amp;f=$INFO[Window(Home).Property(SC.search)]&amp;name=$INFO[Control.GetLabel(312).index(1)]</value>
+	</variable>
+
+	<include name="SCCategoryLabel">
+		<param name="visible">true</param>
+		<param name="item_treshold">0</param>
+		<definition>
+			<control type="label" id="$PARAM[list_id]666">
+				<left>55</left>
+				<top>80</top>
+				<width>900</width>
+				<height>90</height>
+				<label>$PARAM[label]</label>
+				<shadowcolor>text_shadow</shadowcolor>
+				<visible>$PARAM[visible]</visible>
+				<visible>Integer.IsGreater(Container($PARAM[list_id]).NumItems,$PARAM[item_treshold]) | [Container($PARAM[list_id]).IsUpdating + Integer.IsEqual(Container($PARAM[list_id]).NumItems,0)]</visible>
+			</control>
+            <control type="label" id="$PARAM[list_id]667">
+                <left>400</left>
+                <top>70</top>
+                <width>900</width>
+                <height>90</height>
+                <label>$INFO[ListItem.Label]</label>
+                <shadowcolor>text_shadow</shadowcolor>
+                <visible>$PARAM[visible]</visible>
+                <visible>Control.HasFocus($PARAM[list_id])</visible>
+<!--				<visible>Integer.IsGreater(Container($PARAM[list_id]).NumItems,$PARAM[item_treshold])</visible>-->
+            </control>
+		</definition>
+	</include>
+
     <include name="SCWidgetListPoster">
         <definition>
-            <include content="CategoryLabel">
+            <include content="SCCategoryLabel">
                 <param name="label">$PARAM[widget_header]</param>
                 <param name="list_id" value="$PARAM[list_id]"/>
             </include>
@@ -327,6 +361,17 @@
         </include>
     </include>
 
+    <include name="SCTraktWatchlistList">
+        <include content="SCWidgetListPoster">
+            <param name="content_path"
+                   value="plugin://plugin.video.stream-cinema/?action=7472616b742e6c6973742e6974656d73&amp;id=77617463686c697374&amp;title=77617463686c697374&amp;user=6d65&amp;widget=1"/>
+            <!--            <param name="additional_movie_items" value="true"/>-->
+            <param name="widget_header" value="Watchlist"/>
+            <param name="widget_target" value="videos"/>
+            <param name="list_id" value="5921"/>
+        </include>
+    </include>
+
     <include name="SCHomeMenu">
         <item>
             <label>SC Filmy</label>
@@ -387,6 +432,16 @@
             <thumb>icons/sidemenu/movies.png</thumb>
             <property name="id">sc-sport</property>
             <visible>Skin.HasSetting(sc_home_sport)</visible>
+        </item>
+        <item>
+            <label>SC Watchlist</label>
+            <onclick>
+                ActivateWindow(Videos,plugin://plugin.video.stream-cinema/?action=7472616b742e6c6973742e6974656d73&amp;amp;id=77617463686c697374&amp;amp;title=77617463686c697374&amp;amp;user=6d65,return)
+            </onclick>
+            <property name="menu_id">$NUMBER[23913]</property>
+            <thumb>icons/sidemenu/movies.png</thumb>
+            <property name="id">sc-trakt-watchlist</property>
+            <visible>Skin.HasSetting(sc_trakt_watchlist)</visible>
         </item>
     </include>
 
@@ -507,6 +562,13 @@
                     <param name="widget_target" value="videos"/>
                     <param name="list_id" value="5913"/>
                 </include>
+                <include content="SCWidgetListPoster" condition="Skin.HasSetting(sc_home_series_upcomming)">
+                    <param name="content_path"
+                           value="plugin://plugin.video.stream-cinema/?action=6e6578746570&amp;id=6e6578746570&amp;widget=1"/>
+                    <param name="widget_header" value="Nedopozerane"/>
+                    <param name="widget_target" value="videos"/>
+                    <param name="list_id" value="5914"/>
+                </include>
             </control>
             <include content="WidgetScrollbar" condition="Skin.HasSetting(touchmode)">
                 <param name="scrollbar_id" value="5012"/>
@@ -576,6 +638,22 @@
             </control>
             <include content="WidgetScrollbar" condition="Skin.HasSetting(touchmode)">
                 <param name="scrollbar_id" value="5016"/>
+            </include>
+        </control>
+        <!-- trakt watchlist -->
+        <control type="group" id="23912">
+            <visible>Skin.HasSetting(sc_trakt_watchlist) + String.IsEqual(Container(9000).ListItem.Property(id),sc-trakt-watchlist)
+            </visible>
+            <include content="Visible_Right_Delayed">
+                <param name="id" value="sc-trakt-watchlist"/>
+            </include>
+            <control type="grouplist" id="23913">
+                <include>WidgetGroupListCommon</include>
+                <pagecontrol>5017</pagecontrol>
+                <include condition="Skin.HasSetting(sc_trakt_watchlist)">SCTraktWatchlistList</include>
+            </control>
+            <include content="WidgetScrollbar" condition="Skin.HasSetting(touchmode)">
+                <param name="scrollbar_id" value="5017"/>
             </include>
         </control>
     </include>
@@ -894,6 +972,13 @@
             <onclick>Skin.ToggleSetting(sc_home_series_random)</onclick>
             <enable>Skin.HasSetting(sc_home_series)</enable>
         </control>
+        <control type="radiobutton" id="9160">
+            <label>- Nedopozerane</label>
+            <include>DefaultSettingButton</include>
+            <selected>Skin.HasSetting(sc_home_series_upcomming)</selected>
+            <onclick>Skin.ToggleSetting(sc_home_series_upcomming)</onclick>
+            <enable>Skin.HasSetting(sc_home_series)</enable>
+        </control>
         <!-- Koncerty -->
         <control type="radiobutton" id="920">
             <label>Stream Cinema Koncerty</label>
@@ -921,6 +1006,13 @@
             <include>DefaultSettingButton</include>
             <selected>Skin.HasSetting(sc_home_sport)</selected>
             <onclick>Skin.ToggleSetting(sc_home_sport)</onclick>
+        </control>
+        <!-- Watchlist -->
+        <control type="radiobutton" id="960">
+            <label>Stream Cinema Trakt Watchlist</label>
+            <include>DefaultSettingButton</include>
+            <selected>Skin.HasSetting(sc_trakt_watchlist)</selected>
+            <onclick>Skin.ToggleSetting(sc_trakt_watchlist)</onclick>
         </control>
     </include>
 

@@ -45,13 +45,13 @@
                     <label>$VAR[SCVideoRatingTopBarLabel]</label>
 <!--                    <visible>String.IsEmpty($VAR[SCVideoRatingTopBarLogo])</visible>-->
                 </control>
-<!--                <control type="image">-->
-<!--                    <width>64</width>-->
-<!--                    <height>64</height>-->
-<!--                    <texture>$VAR[SCVideoRatingTopBarLogo]</texture>-->
-<!--                    <aspectratio scalediffuse="true">scale</aspectratio>-->
-<!--                    <visible>!String.IsEmpty($VAR[SCVideoRatingTopBarLogo])</visible>-->
-<!--                </control>-->
+                <control type="image">
+                    <width>64</width>
+                    <height>64</height>
+                    <texture>$VAR[SCVideoRatingTopBarLogo]</texture>
+                    <aspectratio scalediffuse="true">scale</aspectratio>
+                    <visible>!String.IsEmpty($VAR[SCVideoRatingTopBarLogo])</visible>
+                </control>
             </control>
         </control>
     </controls>
